@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Check, Circle, Eye, EyeOff } from "lucide-react";
+import { buttonStyles } from "@/components/ui/button";
 import type { AuthState } from "@/app/auth/actions";
 import { passwordRequirementResults } from "@/lib/auth/password";
 
@@ -111,20 +112,23 @@ export function AuthForm({ action, mode, next, email }: Props) {
           {mode === "signup" && <label className="block text-sm font-semibold text-[#34483a]">Full name<input autoComplete="name" name="full_name" required minLength={2} maxLength={80} className={inputClass} /></label>}
           {(mode === "signup" || mode === "resend" || mode === "forgot" || mode === "login") && <label className="block text-sm font-semibold text-[#34483a]">Email address<input autoComplete="email" defaultValue={email} name="email" type="email" required maxLength={254} className={inputClass} /></label>}
           {mode === "signup" && <label className="block text-sm font-semibold text-[#34483a]">Nigerian phone number<input autoComplete="tel" name="phone" type="tel" placeholder="080 1234 5678" required className={inputClass} /></label>}
-          {(mode === "login" || mode === "signup") && <PasswordField label="Password" autoComplete={mode === "login" ? "current-password" : "new-password"} name="password" value={mode === "signup" ? passwordValue : undefined} onValueChange={mode === "signup" ? setPasswordValue : undefined} showRequirements={mode === "signup"} />}
+          {(mode === "login" || mode === "signup") && <>
+            <PasswordField label="Password" autoComplete={mode === "login" ? "current-password" : "new-password"} name="password" value={mode === "signup" ? passwordValue : undefined} onValueChange={mode === "signup" ? setPasswordValue : undefined} showRequirements={mode === "signup"} />
+            {mode === "login" && <Link href="/forgot-password" className={buttonStyles({ variant: "secondary", size: "md", className: "-mt-3 w-full justify-start rounded-xl" })}>Forgot password?</Link>}
+          </>}
           {mode === "reset" && <>
             <PasswordField label="New password" autoComplete="new-password" name="password" value={passwordValue} onValueChange={setPasswordValue} showRequirements />
             <PasswordField label="Confirm new password" autoComplete="new-password" name="confirm_password" value={confirmationValue} onValueChange={setConfirmationValue} confirmationFeedback={confirmationValue ? (passwordValue === confirmationValue ? "match" : "mismatch") : null} />
           </>}
-          {state.error && <div className="rounded-xl bg-[#fff0ed] p-3 text-sm text-[#a23e32]"><p role="alert">{state.error}</p>{mode === "login" && state.errorActions && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 border-t border-[#edcfc9] pt-2">{state.errorActions.includes("reset_password") && <Link href="/forgot-password" className="font-semibold underline underline-offset-4">Reset password</Link>}{state.errorActions.includes("resend_verification") && <Link href="/verify-email" className="font-semibold underline underline-offset-4">Resend verification email</Link>}{state.errorActions.includes("create_account") && <Link href="/signup" className="font-semibold underline underline-offset-4">Create an account</Link>}</div>}</div>}
+          {state.error && <div className="rounded-xl bg-[#fff0ed] p-3 text-sm text-[#a23e32]"><p role="alert">{state.error}</p>{mode === "login" && state.errorActions && <div className="mt-2 flex flex-wrap gap-2 border-t border-[#edcfc9] pt-3">{state.errorActions.includes("reset_password") && <Link href="/forgot-password" className={buttonStyles({ variant: "secondary", size: "md", className: "rounded-xl" })}>Reset password</Link>}{state.errorActions.includes("create_account") && <Link href="/signup" className={buttonStyles({ variant: "secondary", size: "md", className: "rounded-xl" })}>Create an account</Link>}</div>}</div>}
           {state.success && <p role="status" className="rounded-xl bg-[#edf6eb] p-3 text-sm text-[#426d48]">{state.success}</p>}
           {mode === "signup" && <p className="text-xs leading-relaxed text-[#718077]">Please review Drovna&apos;s <Link href="/terms" className="font-semibold text-[#456349] underline underline-offset-2">Terms &amp; Conditions</Link> before creating your account.</p>}
           <button disabled={pending} className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#de7844] px-5 font-semibold text-white transition hover:bg-[#c96232] disabled:cursor-wait disabled:opacity-60">{pending ? "Please wait…" : copy.submit}</button>
         </form>
-        <div className={`mt-5 text-sm text-[#58715e] ${mode === "login" ? "grid grid-cols-1 gap-3 border-t border-[#edf0e9] pt-4 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3" : "flex flex-wrap gap-x-4 gap-y-2"}`}>
-          {mode === "login" && <><Link href="/forgot-password" className="w-fit font-semibold underline underline-offset-4">Forgot password?</Link><Link href="/verify-email" className="w-fit font-semibold underline underline-offset-4">Resend verification</Link><Link href="/signup" className="w-fit font-semibold underline underline-offset-4">Create account</Link></>}
-          {mode === "signup" && <Link href="/login" className="font-semibold underline underline-offset-4">Already have an account? Sign in</Link>}
-          {(mode === "forgot" || mode === "resend") && <Link href="/login" className="font-semibold underline underline-offset-4">Back to sign in</Link>}
+        <div className="mt-5 flex flex-wrap gap-2">
+          {mode === "login" && <Link href="/signup" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Create account</Link>}
+          {mode === "signup" && <Link href="/login" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Already have an account? Sign in</Link>}
+          {(mode === "forgot" || mode === "resend") && <Link href="/login" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Back to sign in</Link>}
         </div>
       </div>
     </main>

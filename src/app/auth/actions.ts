@@ -10,7 +10,7 @@ import { isStrongPassword, passwordErrorMessage } from "@/lib/auth/password";
 export type AuthState = {
   error?: string;
   success?: string;
-  errorActions?: Array<"reset_password" | "resend_verification" | "create_account">;
+  errorActions?: Array<"reset_password" | "create_account">;
 };
 
 const emailSchema = z.string().trim().email().max(254);
@@ -31,7 +31,7 @@ function friendlyAuthError(error: unknown, fallback: string, intent: "signup" | 
   const detail = error && typeof error === "object" ? error as { code?: unknown; status?: unknown; name?: unknown; message?: unknown } : {};
   const code = typeof detail.code === "string" ? detail.code : "";
   const status = typeof detail.status === "number" ? detail.status : 0;
-  if (code === "email_not_confirmed") return "Please confirm your email before signing in. You can request a fresh verification link below.";
+  if (code === "email_not_confirmed") return "Please confirm your email before signing in. Check your inbox for the verification link.";
   if (code === "invalid_credentials") return "Email or password is incorrect, or this email has no account yet. Check your details, reset your password, or create an account.";
   if (code === "user_not_found") return "No account was found for this email. Check the address or create an account.";
   if (code === "email_exists" || code === "user_already_exists") return intent === "signup" ? "An account may already use this email. Try signing in or reset your password." : "This email is already verified. Try signing in.";
@@ -48,11 +48,9 @@ function friendlyAuthError(error: unknown, fallback: string, intent: "signup" | 
 function signInErrorState(error: unknown, fallback: string): AuthState {
   const detail = error && typeof error === "object" ? error as { code?: unknown } : {};
   const code = typeof detail.code === "string" ? detail.code : "";
-  const errorActions: AuthState["errorActions"] = code === "email_not_confirmed"
-    ? ["resend_verification"]
-    : code === "invalid_credentials" || code === "user_not_found"
-      ? ["reset_password", "create_account"]
-      : undefined;
+  const errorActions: AuthState["errorActions"] = code === "invalid_credentials" || code === "user_not_found"
+    ? ["reset_password", "create_account"]
+    : undefined;
   return { error: friendlyAuthError(error, fallback, "login"), errorActions };
 }
 
