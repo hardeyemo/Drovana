@@ -36,7 +36,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden bg-[#f8f7f3]">
           <div className="mx-auto w-full max-w-7xl px-4 py-7 sm:px-8 sm:py-10 md:py-14 lg:px-12">
             <div className="relative mx-auto aspect-[1.15/1] w-full max-w-[1100px] overflow-hidden bg-[#d9dfd2] shadow-[0_24px_70px_-30px_rgba(24,45,39,.35)] sm:aspect-[1.3/1] md:aspect-[1.4/1]" style={{ borderRadius: "1.5rem 45% 45% 1.5rem / 1.5rem 50% 50% 1.5rem" }}>
-              <Image src="https://images.pexels.com/photos/36547280/pexels-photo-36547280.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Professional motorcycle courier carrying a delivery box through an urban Nigerian neighborhood" fill priority sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1100px" className="object-cover object-[center_38%]" />
+              <Image src="https://images.pexels.com/photos/7362951/pexels-photo-7362951.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Black delivery courier wearing a helmet, ready to ride through the city" fill priority sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1100px" className="object-cover object-[center_38%]" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#182d27]/75 via-[#182d27]/10 to-[#182d27]/15" aria-hidden="true" />
               <div className="absolute left-4 top-4 rounded-full border border-white/55 bg-[#f8f7f3]/95 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[.14em] text-[#345542] shadow-md sm:left-7 sm:top-7 sm:px-4 sm:text-xs">
                 Local delivery · Ilorin
