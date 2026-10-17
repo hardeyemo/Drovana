@@ -56,9 +56,10 @@ function signInErrorState(error: unknown, fallback: string): AuthState {
 
 async function authRedirectUrl(next: string) {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const requestHeaders = await headers();
+  const requestHost = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "";
+  const loopbackHost = (host: string) => /^(localhost|127\.0\.0\.1|\[::1\])(?::\d{1,5})?$/.test(host);
   if (process.env.NODE_ENV === "development") {
-    const requestHeaders = await headers();
-    const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "";
     // Respect an explicitly configured LAN/tunnel origin. For local browsing,
     // use the incoming host so links retain the actual dev port or LAN address.
     if (configuredUrl) {
@@ -72,9 +73,9 @@ async function authRedirectUrl(next: string) {
         // Fall through to the request host and reject invalid configuration below.
       }
     }
-    if (/^(localhost|127\.0\.0\.1|\[::1\]|(?:10|192\.168)\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(?::\d{1,5})?$/.test(host)) {
+    if (/^(localhost|127\.0\.0\.1|\[::1\]|(?:10|192\.168)\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})(?::\d{1,5})?$/.test(requestHost)) {
       const protocol = requestHeaders.get("x-forwarded-proto") === "https" ? "https" : "http";
-      return `${protocol}://${host}/auth/callback?next=${encodeURIComponent(next)}`;
+      return `${protocol}://${requestHost}/auth/callback?next=${encodeURIComponent(next)}`;
     }
   }
 
@@ -83,8 +84,11 @@ async function authRedirectUrl(next: string) {
     const siteUrl = new URL(configuredUrl);
     // HTTP is accepted only in development so LAN devices can complete auth
     // callbacks over a trusted local network. Production always requires HTTPS.
+    // A locally run production build (for example, `next start`) still needs
+    // to support localhost callbacks. Keep HTTP disallowed for deployed hosts.
+    const localProductionHttp = process.env.NODE_ENV === "production" && siteUrl.protocol === "http:" && loopbackHost(siteUrl.host) && loopbackHost(requestHost);
     const developmentHttp = process.env.NODE_ENV !== "production" && siteUrl.protocol === "http:";
-    if ((siteUrl.protocol !== "https:" && !developmentHttp) || siteUrl.username || siteUrl.password) return null;
+    if ((siteUrl.protocol !== "https:" && !developmentHttp && !localProductionHttp) || siteUrl.username || siteUrl.password) return null;
     return `${siteUrl.origin}/auth/callback?next=${encodeURIComponent(next)}`;
   } catch {
     return null;
