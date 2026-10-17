@@ -36,10 +36,10 @@ export default function HomePage() {
       <ScrollReveal>
         <section className="relative overflow-hidden bg-[#f8f7f3]">
           <div className="absolute -right-28 -top-40 size-[34rem] rounded-full bg-[#eaf1e4] blur-3xl" aria-hidden="true" />
-          <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-10 sm:px-8 md:grid-cols-[1.04fr_.96fr] md:items-center md:gap-8 md:pb-20 md:pt-16 lg:px-12">
-            <StaggerGrid className="max-w-2xl">
+          <div className="relative mx-auto grid max-w-7xl grid-cols-1 min-w-0 gap-8 px-5 pb-14 pt-10 sm:px-8 md:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] md:items-center md:gap-8 md:pb-20 md:pt-16 lg:gap-10 lg:px-12">
+            <StaggerGrid className="min-w-0 max-w-2xl">
               <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d9e5d5] bg-white/80 px-3 py-1.5 text-xs font-semibold tracking-wide text-[#456349]"><MapPin className="size-3.5" /> MADE FOR ILORIN <span className="size-1 rounded-full bg-[#e39a3b]" /> NOW SERVING</div>
-              <h1 className="max-w-xl font-display text-[2.8rem] font-semibold leading-[.99] tracking-[-.055em] text-[#182d27] min-[380px]:text-[3.2rem] sm:text-6xl lg:text-[4.4rem]">Good things,<br /><span className="text-[#de7844]">on their way.</span></h1>
+              <h1 className="max-w-xl font-display text-[clamp(2.45rem,10vw,3.2rem)] font-semibold leading-[.99] tracking-[-.055em] text-[#182d27] sm:text-6xl lg:text-[4.4rem]">Good things,<br /><span className="text-[#de7844]">on their way.</span></h1>
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-[#64716b]">Your favourite food, market finds and parcels, brought right to your door by a rider from around the corner.</p>
               <div className="mt-7 flex flex-wrap items-center gap-3 text-sm font-medium text-[#53635a]"><span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm"><MapPin className="size-4 text-[#de7844]" /> Ilorin, Kwara State</span><span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#de7844]" /> Track every delivery</span></div>
               <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
@@ -48,9 +48,9 @@ export default function HomePage() {
               </div>
               <div className="mt-7 flex items-center gap-3 text-sm text-[#69756e]"><span className="grid size-9 place-items-center rounded-full bg-[#e7eee1] text-[#456349]"><Bike className="size-4" /></span><span><strong className="text-[#24382e]">Ilorin riders,</strong> ready when you are</span></div>
             </StaggerGrid>
-            <ScrollReveal delay={0.12} direction="right">
+            <ScrollReveal delay={0.12} direction="right" className="min-w-0">
             <ScrollParallax>
-              <div className="relative mx-auto w-full max-w-[570px] md:ml-auto">
+              <div className="relative mx-auto w-full min-w-0 max-w-[570px] md:ml-auto">
                 <div className="relative aspect-[1.08/1] overflow-hidden rounded-[2rem] bg-[#d9dfd2] shadow-[0_24px_70px_-30px_rgba(24,45,39,.45)]">
                   <Image src="https://images.pexels.com/photos/9461320/pexels-photo-9461320.jpeg?auto=compress&dpr=1&w=1200" alt="Black delivery rider checking a delivery route beside his scooter" fill priority sizes="(max-width: 768px) 100vw, 48vw" className="object-cover object-[center_38%] transition-transform duration-700 hover:scale-[1.03]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#14251f]/65 via-[#14251f]/5 to-transparent" />

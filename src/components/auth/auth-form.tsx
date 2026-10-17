@@ -121,8 +121,8 @@ export function AuthForm({ action, mode, next, email }: Props) {
           {mode === "signup" && <p className="text-xs leading-relaxed text-[#718077]">Please review Drovna&apos;s <Link href="/terms" className="font-semibold text-[#456349] underline underline-offset-2">Terms &amp; Conditions</Link> before creating your account.</p>}
           <button disabled={pending} className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#de7844] px-5 font-semibold text-white transition hover:bg-[#c96232] disabled:cursor-wait disabled:opacity-60">{pending ? "Please wait…" : copy.submit}</button>
         </form>
-        <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[#58715e]">
-          {mode === "login" && <><Link href="/forgot-password" className="font-semibold underline underline-offset-4">Forgot password?</Link><Link href="/verify-email" className="font-semibold underline underline-offset-4">Resend verification</Link><Link href="/signup" className="font-semibold underline underline-offset-4">Create account</Link></>}
+        <div className={`mt-5 text-sm text-[#58715e] ${mode === "login" ? "grid grid-cols-1 gap-3 border-t border-[#edf0e9] pt-4 sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-3" : "flex flex-wrap gap-x-4 gap-y-2"}`}>
+          {mode === "login" && <><Link href="/forgot-password" className="w-fit font-semibold underline underline-offset-4">Forgot password?</Link><Link href="/verify-email" className="w-fit font-semibold underline underline-offset-4">Resend verification</Link><Link href="/signup" className="w-fit font-semibold underline underline-offset-4">Create account</Link></>}
           {mode === "signup" && <Link href="/login" className="font-semibold underline underline-offset-4">Already have an account? Sign in</Link>}
           {(mode === "forgot" || mode === "resend") && <Link href="/login" className="font-semibold underline underline-offset-4">Back to sign in</Link>}
         </div>
