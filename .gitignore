@@ -1,0 +1,26 @@
+# Dependencies and generated build output
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local credentials. Keep the committed template as the only exception.
+.env
+.env.*
+!.env.example
+
+# Deployment and local tooling
+.vercel/
+.supabase/
+.DS_Store
+Thumbs.db
+
+# Logs and test artifacts
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+playwright-report/
+test-results/

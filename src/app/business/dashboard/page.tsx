@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight, Store } from "lucide-react";
+import { requireRole } from "@/lib/auth/server";
+import { SignOutButton } from "@/components/auth/sign-out-button";
+
+export const metadata: Metadata = { title: "Business dashboard" };
+export default async function BusinessDashboardPage() {
+  const { profile, supabase } = await requireRole("business");
+  const { data: business } = await supabase.from("business_profiles").select("business_name,address,review_status").eq("user_id", profile.id).single();
+  const { data: deliveries } = await supabase.from("deliveries").select("id,tracking_code,category,pickup_address,dropoff_address,status,estimated_fee_kobo,requested_at").eq("business_id", profile.id).order("requested_at", { ascending: false }).limit(50);
+  return <main className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-12"><div className="flex flex-wrap items-center justify-between gap-4"><div><p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#de7844]"><Store className="size-4"/> Business portal</p><h1 className="mt-1 font-display text-3xl font-semibold text-[#263d32]">{business?.business_name||"Business dashboard"}</h1><p className="mt-1 text-sm text-[#718077]">{business?.address} · <span className="capitalize">{business?.review_status}</span></p></div><div className="flex gap-2"><Link href="/deliveries/new" className="inline-flex h-11 items-center gap-2 rounded-full bg-[#de7844] px-4 text-sm font-semibold text-white">Book a delivery <ArrowRight className="size-4"/></Link><SignOutButton/></div></div><section className="mt-9"><h2 className="font-display text-2xl font-semibold text-[#263d32]">Business deliveries</h2><div className="mt-4 space-y-3">{deliveries?.length?deliveries.map((delivery)=><article key={delivery.id} className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#e5e6df] bg-white p-5"><div><span className="text-xs font-bold uppercase tracking-wider text-[#de7844]">{delivery.tracking_code} · {delivery.category}</span><p className="mt-1 font-semibold text-[#34483a]">{delivery.pickup_address} → {delivery.dropoff_address}</p><p className="mt-1 text-xs capitalize text-[#7b887e]">{delivery.status.replaceAll("_"," ")} · Estimate ₦{(delivery.estimated_fee_kobo/100).toLocaleString()}</p></div><Link href={`/deliveries/track?ref=${delivery.tracking_code}`} className="text-sm font-bold text-[#47734e]">Track</Link></article>):<p className="rounded-2xl border border-dashed border-[#d8dfd5] bg-white p-7 text-sm text-[#7c8780]">Your business delivery requests will appear here.</p>}</div></section></main>;
+}

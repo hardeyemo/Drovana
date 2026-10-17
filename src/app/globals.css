@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/*
+  Drovna design tokens (Tailwind v4, CSS-first).
+  Only the shades used by the product are defined; other emerald/amber
+  shades fall back to Tailwind defaults, so avoid using undefined ones.
+  Text on paper: navy-900 (~15:1), ink-muted (~6:1), emerald-700 (~5:1).
+*/
+@theme {
+  --color-navy-950: #182d27;
+  --color-navy-900: #263d32;
+  --color-navy-800: #344d3d;
+  --color-navy-700: #456349;
+  --color-navy-200: #d1ddd2;
+
+  --color-emerald-800: #a64d2c;
+  --color-emerald-700: #c96232;
+  --color-emerald-500: #de7844;
+  --color-emerald-100: #fff0e6;
+
+  --color-amber-500: #e5a02d;
+  --color-amber-100: #fbefd5;
+
+  --color-paper: #f8f7f3;
+  --color-paper-deep: #f0eee7;
+  --color-line: #e5e4dc;
+  --color-ink: #263d32;
+  --color-ink-muted: #64716b;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-control: 0.625rem;
+  --radius-panel: 1rem;
+
+  --shadow-soft: 0 1px 2px rgb(11 31 58 / 0.06),
+    0 6px 18px -8px rgb(11 31 58 / 0.14);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    min-width: 0;
+    overflow-x: clip;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  input, select, textarea {
+    min-width: 0;
+    max-width: 100%;
+  }
+  :where(main, section, article, aside) {
+    min-width: 0;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-emerald-700);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
