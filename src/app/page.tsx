@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Bike,
   Clock3,
-  MapPin,
   Package,
   ShoppingBasket,
   Soup,
@@ -12,7 +11,7 @@ import {
   Store,
 } from "lucide-react";
 import { buttonStyles } from "@/components/ui/button";
-import { ScrollParallax, ScrollReveal, StaggerGrid } from "@/components/motion/scroll-effects";
+import { ScrollReveal, StaggerGrid } from "@/components/motion/scroll-effects";
 import { bookingHref } from "@/lib/config/site";
 
 const categories = [
@@ -35,32 +34,19 @@ export default function HomePage() {
     <main>
       <ScrollReveal>
         <section className="relative overflow-hidden bg-[#f8f7f3]">
-          <div className="absolute -right-28 -top-40 size-[34rem] rounded-full bg-[#eaf1e4] blur-3xl" aria-hidden="true" />
-          <div className="relative mx-auto grid max-w-7xl grid-cols-1 min-w-0 gap-8 px-5 pb-14 pt-10 sm:gap-10 sm:px-8 md:gap-12 md:pb-20 md:pt-16 lg:px-12">
-            <StaggerGrid className="min-w-0 max-w-3xl">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d9e5d5] bg-white/80 px-3 py-1.5 text-xs font-semibold tracking-wide text-[#456349]"><MapPin className="size-3.5" /> MADE FOR ILORIN <span className="size-1 rounded-full bg-[#e39a3b]" /> NOW SERVING</div>
-              <h1 className="max-w-xl font-display text-[clamp(2.45rem,10vw,3.2rem)] font-semibold leading-[.99] tracking-[-.055em] text-[#182d27] sm:text-6xl lg:text-[4.4rem]">Good things,<br /><span className="text-[#de7844]">on their way.</span></h1>
-              <p className="mt-5 max-w-lg text-lg leading-relaxed text-[#64716b]">Your favourite food, market finds and parcels, brought right to your door by a rider from around the corner.</p>
-              <div className="mt-7 flex flex-wrap items-center gap-3 text-sm font-medium text-[#53635a]"><span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm"><MapPin className="size-4 text-[#de7844]" /> Ilorin, Kwara State</span><span className="inline-flex items-center gap-2"><Clock3 className="size-4 text-[#de7844]" /> Track every delivery</span></div>
-              <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
-                <Link href={bookingHref} className={buttonStyles({ size: "lg", className: "!h-14 !w-full !rounded-full !bg-[#de7844] !px-7 !text-white hover:!bg-[#c96232] min-[420px]:!w-auto" })}>Start an order <ArrowRight className="size-4" /></Link>
-                <Link href="/deliveries/track" className={buttonStyles({ variant: "secondary", size: "lg", className: "!h-14 !w-full !rounded-full !border-[#d8ded7] !bg-white !px-7 min-[420px]:!w-auto" })}><MapPin className="size-4" /> Track a delivery</Link>
+          <div className="mx-auto w-full max-w-7xl px-4 py-7 sm:px-8 sm:py-10 md:py-14 lg:px-12">
+            <div className="relative mx-auto aspect-[1.15/1] w-full max-w-[1100px] overflow-hidden bg-[#d9dfd2] shadow-[0_24px_70px_-30px_rgba(24,45,39,.35)] sm:aspect-[1.3/1] md:aspect-[1.4/1]" style={{ borderRadius: "1.5rem 45% 45% 1.5rem / 1.5rem 50% 50% 1.5rem" }}>
+              <Image src="https://images.pexels.com/photos/36547280/pexels-photo-36547280.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Professional motorcycle courier carrying a delivery box through an urban Nigerian neighborhood" fill priority sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1100px" className="object-cover object-[center_38%]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#182d27]/75 via-[#182d27]/10 to-[#182d27]/15" aria-hidden="true" />
+              <div className="absolute left-4 top-4 rounded-full border border-white/55 bg-[#f8f7f3]/95 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[.14em] text-[#345542] shadow-md sm:left-7 sm:top-7 sm:px-4 sm:text-xs">
+                Local delivery · Ilorin
               </div>
-              <div className="mt-7 flex items-center gap-3 text-sm text-[#69756e]"><span className="grid size-9 place-items-center rounded-full bg-[#e7eee1] text-[#456349]"><Bike className="size-4" /></span><span><strong className="text-[#24382e]">Ilorin riders,</strong> ready when you are</span></div>
-            </StaggerGrid>
-            <ScrollReveal delay={0.12} direction="right" className="min-w-0">
-            <ScrollParallax>
-              <div className="relative mx-auto w-full min-w-0 max-w-[720px]">
-                <div className="relative aspect-[1.08/1] overflow-hidden rounded-[2rem] bg-[#d9dfd2] shadow-[0_24px_70px_-30px_rgba(24,45,39,.45)]">
-                  <Image src="https://images.pexels.com/photos/9461320/pexels-photo-9461320.jpeg?auto=compress&dpr=1&w=1200" alt="Black delivery rider checking a delivery route beside his scooter" fill priority sizes="(max-width: 768px) 100vw, 48vw" className="object-cover object-[center_38%] transition-transform duration-700 hover:scale-[1.03]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#14251f]/65 via-[#14251f]/5 to-transparent" />
-                  <div className="absolute left-4 top-4 rounded-2xl border border-white/60 bg-white/95 px-4 py-3 shadow-lg sm:left-6 sm:top-6"><div className="text-[10px] font-bold uppercase tracking-wider text-[#8b958a]">PICKUP</div><div className="mt-1 text-sm font-semibold text-[#24382e]">GRA, Ilorin</div></div>
-                  <div className="absolute bottom-5 left-4 right-4 flex items-center gap-3 rounded-2xl border border-white/70 bg-white/95 p-3.5 shadow-lg sm:bottom-7 sm:left-6 sm:right-auto sm:min-w-72"><div className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff0e6] text-[#de7844]"><Package className="size-5" /></div><div><div className="text-sm font-bold text-[#263b31]">Your order is moving</div><div className="text-xs text-[#7b867f]">Rider nearby · Ilorin, Kwara</div></div><span className="ml-auto size-2 shrink-0 rounded-full bg-[#6aa76a] ring-4 ring-[#eaf4e7]" /></div>
-                  <div className="absolute right-4 top-4 hidden rounded-full bg-white/95 px-3 py-1.5 text-[10px] font-bold text-[#52644f] shadow-sm sm:block sm:right-6 sm:top-6 sm:text-xs"><Sparkles className="mr-1 inline size-3.5 text-[#de7844]" /> YOUR NEIGHBOURHOOD, CONNECTED</div>
-                </div>
+              <div className="absolute bottom-5 left-5 right-5 text-white sm:bottom-9 sm:left-9 sm:right-auto sm:max-w-lg">
+                <p className="text-xs font-bold uppercase tracking-[.18em] text-[#f4c28d] sm:text-sm">From pickup to doorstep</p>
+                <h1 className="mt-2 max-w-md font-display text-2xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">Your delivery, in good hands.</h1>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/90 sm:mt-3 sm:text-base">Trusted local riders moving food, parcels and everyday essentials across Ilorin.</p>
               </div>
-            </ScrollParallax>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
       </ScrollReveal>
