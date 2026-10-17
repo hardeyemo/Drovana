@@ -48,7 +48,7 @@ Set the values in `.env.local` before using authenticated features:
    ```
 
    The migrations create the profile trigger, roles, marketplace tables, RLS policies, and guarded database functions. Review them before applying to an existing database. The hardening migration adds a composite payment-owner constraint; existing payment rows must match their delivery owner.
-3. In Supabase Auth, enable the Email provider and **Confirm email**. Under **URL Configuration**, set Site URL to the deployed HTTPS origin and allow the deployed `/auth/callback` URL. For local testing, allow `http://localhost:3000/**` and the port actually used by Next (often `http://localhost:3001/**`). To test from a phone, open the app via the computer's LAN IP and allow that exact origin and its `/auth/callback` URL too. The callback routes password reset links to `/reset-password` and verification links to `/account`.
+3. In Supabase Auth, enable the Email provider and disable **Confirm email** under Authentication → Providers → Email. This lets Supabase return a session at signup and implicitly confirms email addresses. Existing unconfirmed accounts may need an administrator to confirm them in Supabase Auth before they can sign in; Drovana never changes confirmation status itself. Under **URL Configuration**, set Site URL to the deployed HTTPS origin and allow the deployed `/auth/callback` URL. For local testing, allow `http://localhost:3000/**` and the port actually used by Next (often `http://localhost:3001/**`). To test from a phone, open the app via the computer's LAN IP and allow that exact origin and its `/auth/callback` URL too. The callback handles password reset links at `/reset-password`.
 4. For real customer email delivery, configure custom SMTP under **Authentication → Emails → SMTP Settings**, verify the sender domain and SPF/DKIM records with your email provider, and use a branded sender address. Supabase's built-in email service is for development and has a very low send limit. Disable click/link tracking in the SMTP provider so it does not rewrite authentication URLs. Keep the **Confirm signup** and **Reset Password** templates' Supabase-generated `{{ .ConfirmationURL }}` links; do not hard-code a `{{ .SiteURL }}` callback because it can point to the wrong host. Check Auth logs and the SMTP provider's delivery logs when an email is missing. See Supabase's current [SMTP setup](https://supabase.com/docs/guides/auth/auth-smtp), [redirect URL](https://supabase.com/docs/guides/auth/redirect-urls), and [email troubleshooting](https://supabase.com/docs/guides/troubleshooting/not-receiving-auth-emails-from-the-supabase-project-OFSNzw) guides.
 5. Create and verify the first account. In the Supabase SQL editor, bootstrap the first administrator by replacing the email below:
 
@@ -73,7 +73,7 @@ Before launch, also configure email delivery/templates, database backups and mon
 
 ## Implemented functionality
 
-- Email/password sign-up and sign-in, email verification, resend verification, password reset, and sign-out.
+- Email/password sign-up with an immediate session, sign-in, password reset, and sign-out.
 - Strong signup/reset passwords: at least 8 characters, one uppercase letter, one number, and one punctuation or symbol character.
 - Customer delivery requests, fee estimates by category, saved addresses, and owner-scoped tracking/status history.
 - Paystack initialization, callback verification, signed webhook handling, and duplicate-payment protections.

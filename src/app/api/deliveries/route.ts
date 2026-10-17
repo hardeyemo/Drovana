@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.email_confirmed_at) return NextResponse.json({ error: "Verify your email before placing a delivery request." }, { status: 401 });
+    if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
     const input = parsed.data;
     const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
     let businessId: string | null = null;

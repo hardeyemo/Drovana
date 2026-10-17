@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.email || !user.email_confirmed_at) return NextResponse.json({ error: "Sign in with a verified email before payment." }, { status: 401 });
+    if (!user?.email) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
     const { data: delivery } = await supabase.from("deliveries").select("id, customer_id, estimated_fee_kobo, final_fee_kobo, status").eq("id", parsed.data.delivery_id).maybeSingle();
     if (!delivery || delivery.customer_id !== user.id || delivery.status === "cancelled" || delivery.status === "delivered") return NextResponse.json({ error: "This delivery can’t be paid for." }, { status: 404 });
     const { data: paid } = await supabase.from("payments").select("id").eq("delivery_id", delivery.id).eq("status", "success").maybeSingle();

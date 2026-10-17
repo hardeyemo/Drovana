@@ -15,7 +15,7 @@ export default async function PaymentResultPage({ searchParams }: { searchParams
     try {
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      if (user?.email_confirmed_at) {
+      if (user) {
         const { data: payment } = await supabase.from("payments").select("status").eq("provider_reference", reference.toUpperCase()).maybeSingle();
         if (payment?.status === "success") status = "success";
         else if (payment?.status === "failed") status = "failed";

@@ -19,7 +19,7 @@ export function ScrollReveal({ children, className, delay = 0, direction = "up" 
   return (
     <motion.div
       className={className}
-      initial={reduceMotion ? false : { opacity: 0, ...offset }}
+      initial={{ opacity: 0, ...offset }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, amount: 0.15, margin: "0px 0px -10% 0px" }}
       transition={{
@@ -42,7 +42,7 @@ export function StaggerGrid({ children, className }: ScrollRevealProps) {
   return (
     <motion.div
       className={className}
-      initial={reduceMotion ? false : "hidden"}
+      initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.12, margin: "0px 0px -10% 0px" }}
       variants={{

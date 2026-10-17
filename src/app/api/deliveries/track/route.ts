@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.email_confirmed_at) return NextResponse.json({ error: "Verify your email to view deliveries." }, { status: 401 });
+    if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
     const { data: delivery, error } = await supabase.from("deliveries").select("id, tracking_code, category, pickup_address, dropoff_address, estimated_fee_kobo, final_fee_kobo, status, requested_at, accepted_at, picked_up_at, delivered_at").eq("tracking_code", reference.data.toUpperCase()).maybeSingle();
     if (error || !delivery) return NextResponse.json({ error: "We couldn’t find a delivery with that reference." }, { status: 404 });
     const { data: events } = await supabase.from("delivery_events").select("status, note, created_at").eq("delivery_id", delivery.id).order("created_at", { ascending: true });

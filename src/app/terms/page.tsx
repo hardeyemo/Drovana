@@ -19,7 +19,7 @@ const sections = [
     title: "2. Accounts and accurate information",
     paragraphs: [
       "Provide accurate contact, pickup, drop-off, and account details and keep them current. You are responsible for activity carried out through your account and for protecting your sign-in credentials. Tell Drovna promptly if you believe your account has been accessed without permission.",
-      "Email verification may be required before you can book or pay. Drovna may restrict access where information is materially false, an account is misused, or a restriction is needed for safety or legal compliance. Any suspension or account-closure process requires legal and operational review before launch.",
+      "You must be signed in before you can book or pay. Drovna may restrict access where information is materially false, an account is misused, or a restriction is needed for safety or legal compliance. Any suspension or account-closure process requires legal and operational review before launch.",
     ],
   },
   {

@@ -13,7 +13,6 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
-  if (!user.email_confirmed_at) return NextResponse.json({ error: "Confirm your email before continuing." }, { status: 403 });
   const { data: isAdmin, error: authorizationError } = await supabase.rpc("is_admin");
   if (authorizationError) {
     console.error("Admin application authorization unavailable", { code: authorizationError.code });

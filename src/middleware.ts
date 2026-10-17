@@ -48,7 +48,6 @@ export async function middleware(request: NextRequest) {
     login.searchParams.set("next", `${pathname}${search}`);
     return redirectWithCookies(login);
   }
-  if (isProtected && user && !user.email_confirmed_at) return redirectWithCookies(new URL("/verify-email", request.url));
 
   if (user && isProtected) {
     const matchedRoute = roleRoutes.find(({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`));

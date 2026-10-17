@@ -19,6 +19,6 @@ export async function GET(request: NextRequest) {
   }
   const destination = next === "/reset-password"
     ? "/forgot-password?error=expired"
-    : "/login?error=verification";
+    : "/login?error=auth_link";
   return NextResponse.redirect(new URL(destination, request.url));
 }

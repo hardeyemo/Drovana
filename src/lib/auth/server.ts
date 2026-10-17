@@ -17,7 +17,6 @@ export async function requireUser() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  if (!user.email_confirmed_at) redirect("/verify-email");
   let profile;
   try {
     const { data, error } = await supabase.from("profiles").select("id, full_name, phone, role").eq("id", user.id).maybeSingle();
@@ -69,7 +68,6 @@ export async function requireAdmin() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  if (!user.email_confirmed_at) redirect("/verify-email");
 
   try {
     const { data: profile, error } = await supabase

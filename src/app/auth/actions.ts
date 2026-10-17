@@ -31,7 +31,7 @@ function friendlyAuthError(error: unknown, fallback: string, intent: "signup" | 
   const detail = error && typeof error === "object" ? error as { code?: unknown; status?: unknown; name?: unknown; message?: unknown } : {};
   const code = typeof detail.code === "string" ? detail.code : "";
   const status = typeof detail.status === "number" ? detail.status : 0;
-  if (code === "email_not_confirmed") return "Please confirm your email before signing in. Check your inbox for the verification link.";
+  if (code === "email_not_confirmed") return "This existing account still requires email confirmation in Supabase. Ask an administrator to confirm it; Drovana cannot verify an account on your behalf.";
   if (code === "invalid_credentials") return "Email or password is incorrect, or this email has no account yet. Check your details, reset your password, or create an account.";
   if (code === "user_not_found") return "No account was found for this email. Check the address or create an account.";
   if (code === "email_exists" || code === "user_already_exists") return intent === "signup" ? "An account may already use this email. Try signing in or reset your password." : "This email is already verified. Try signing in.";
@@ -107,12 +107,8 @@ export async function signInAction(_previous: AuthState, formData: FormData): Pr
   } catch (error) {
     return signInErrorState(error, "We could not sign you in right now. Please try again.");
   }
-  const { data, error } = result;
+  const { error } = result;
   if (error) return signInErrorState(error, "Sign-in failed. Check your details and try again.");
-  if (!data.user.email_confirmed_at) {
-    await supabase.auth.signOut();
-    redirect("/verify-email?status=not-confirmed");
-  }
   redirect(safeNext(formValue(formData, "next")));
 }
 
@@ -125,18 +121,13 @@ export async function signUpAction(_previous: AuthState, formData: FormData): Pr
   const phone = z.string().trim().transform((value) => value.replace(/[\s()-]/g, "")).pipe(z.string().regex(/^(\+?234|0)[789][01]\d{8}$/)).safeParse(formValue(formData, "phone"));
   if (!password.success) return { error: passwordErrorMessage(passwordValue) || "Password must be 128 characters or fewer." };
   if (!name.success || !email.success || !phone.success) return { error: "Enter your name, a valid email address and a valid Nigerian phone number." };
-  const emailRedirectTo = await authRedirectUrl("/account");
-  if (!emailRedirectTo) return { error: "Drovna could not determine a valid email callback URL. Check NEXT_PUBLIC_SITE_URL; use HTTPS in production and a reachable app URL for local testing." };
   const supabase = await createClient();
   let result;
   try {
     result = await supabase.auth.signUp({
       email: email.data,
       password: password.data,
-      options: {
-        emailRedirectTo,
-        data: { full_name: name.data, phone: phone.data },
-      },
+      options: { data: { full_name: name.data, phone: phone.data } },
     });
   } catch (error) {
     return { error: friendlyAuthError(error, "We could not create your account right now. Please try again.", "signup") };
@@ -144,7 +135,7 @@ export async function signUpAction(_previous: AuthState, formData: FormData): Pr
   const { data, error } = result;
   if (error) return { error: friendlyAuthError(error, "Account creation failed. Try signing in or resetting your password if you have registered before.", "signup") };
   if (data.session) redirect("/account");
-  redirect("/verify-email");
+  return { error: "Supabase created the account without a session. Check that Confirm email is disabled in Supabase Auth settings, then try signing in again." };
 }
 
 export async function forgotPasswordAction(_previous: AuthState, formData: FormData): Promise<AuthState> {
@@ -188,23 +179,6 @@ export async function updatePasswordAction(_previous: AuthState, formData: FormD
   }
   if (error) return { error: friendlyAuthError(error, "We could not update your password. Please request a new reset link.", "email") };
   redirect("/account?password=updated");
-}
-
-export async function resendVerificationAction(_previous: AuthState, formData: FormData): Promise<AuthState> {
-  if (!hasSupabaseConfig()) return { error: "Authentication is not configured. Add the Supabase URL and anon key." };
-  const email = emailSchema.safeParse(formValue(formData, "email"));
-  if (!email.success) return { error: "Enter a valid email address." };
-  const emailRedirectTo = await authRedirectUrl("/account");
-  if (!emailRedirectTo) return { error: "Drovna could not determine a valid email callback URL. Check NEXT_PUBLIC_SITE_URL; use HTTPS in production and a reachable app URL for local testing." };
-  const supabase = await createClient();
-  let error;
-  try {
-    ({ error } = await supabase.auth.resend({ type: "signup", email: email.data, options: { emailRedirectTo } }));
-  } catch (requestError) {
-    return { error: friendlyAuthError(requestError, "We could not resend the link right now. Please try again.", "email") };
-  }
-  if (error) return { error: friendlyAuthError(error, "We could not resend the link. Check your email address and try again.", "email") };
-  return { success: "If the address has a pending account, a verification link is on its way." };
 }
 
 export async function signOutAction() {

@@ -9,7 +9,7 @@ import { passwordRequirementResults } from "@/lib/auth/password";
 
 type Props = {
   action: (state: AuthState, formData: FormData) => Promise<AuthState>;
-  mode: "login" | "signup" | "forgot" | "reset" | "resend";
+  mode: "login" | "signup" | "forgot" | "reset";
   next?: string;
   email?: string;
 };
@@ -19,7 +19,6 @@ const labels = {
   signup: { title: "Create your account", intro: "Order across Ilorin and keep every delivery in view.", submit: "Create account" },
   forgot: { title: "Reset your password", intro: "We’ll email you a secure link to choose a new password.", submit: "Send reset link" },
   reset: { title: "Choose a new password", intro: "Create a strong password to help keep your account secure.", submit: "Update password" },
-  resend: { title: "Resend verification email", intro: "Enter the email you used to sign up.", submit: "Resend verification" },
 } as const;
 
 const inputClass = "mt-1.5 h-12 w-full rounded-xl border border-[#dfe3dc] bg-white px-4 font-normal outline-none transition focus:border-[#de7844] focus:ring-2 focus:ring-[#de7844]/20";
@@ -110,7 +109,7 @@ export function AuthForm({ action, mode, next, email }: Props) {
         }} className="mt-7 space-y-4">
           {next && <input type="hidden" name="next" value={next} />}
           {mode === "signup" && <label className="block text-sm font-semibold text-[#34483a]">Full name<input autoComplete="name" name="full_name" required minLength={2} maxLength={80} className={inputClass} /></label>}
-          {(mode === "signup" || mode === "resend" || mode === "forgot" || mode === "login") && <label className="block text-sm font-semibold text-[#34483a]">Email address<input autoComplete="email" defaultValue={email} name="email" type="email" required maxLength={254} className={inputClass} /></label>}
+          {(mode === "signup" || mode === "forgot" || mode === "login") && <label className="block text-sm font-semibold text-[#34483a]">Email address<input autoComplete="email" defaultValue={email} name="email" type="email" required maxLength={254} className={inputClass} /></label>}
           {mode === "signup" && <label className="block text-sm font-semibold text-[#34483a]">Nigerian phone number<input autoComplete="tel" name="phone" type="tel" placeholder="080 1234 5678" required className={inputClass} /></label>}
           {(mode === "login" || mode === "signup") && <>
             <PasswordField label="Password" autoComplete={mode === "login" ? "current-password" : "new-password"} name="password" value={mode === "signup" ? passwordValue : undefined} onValueChange={mode === "signup" ? setPasswordValue : undefined} showRequirements={mode === "signup"} />
@@ -128,7 +127,7 @@ export function AuthForm({ action, mode, next, email }: Props) {
         <div className="mt-5 flex flex-wrap gap-2">
           {mode === "login" && <Link href="/signup" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Create account</Link>}
           {mode === "signup" && <Link href="/login" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Already have an account? Sign in</Link>}
-          {(mode === "forgot" || mode === "resend") && <Link href="/login" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Back to sign in</Link>}
+          {mode === "forgot" && <Link href="/login" className={buttonStyles({ variant: "secondary", size: "md", className: "w-full rounded-xl sm:w-auto" })}>Back to sign in</Link>}
         </div>
       </div>
     </main>
